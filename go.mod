@@ -1,4 +1,4 @@
-module to-do-list-rest-api
+module todo
 
 go 1.23.0
 
