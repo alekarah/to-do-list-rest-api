@@ -2,19 +2,27 @@ package main
 
 import (
 	"log"
+	"os"
 	"todo/pkg/db"
 	"todo/pkg/server"
 )
 
 func main() {
+	// Получаем путь к базе данных из переменной окружения
+	dbFile := os.Getenv("TODO_DBFILE")
+	if dbFile == "" {
+		// Если переменная окружения не задана, используем значение по умолчанию
+		dbFile = "scheduler.db"
+	}
+
 	// Инициализируем базу данных
-	err := db.Init("scheduler.db")
+	err := db.Init(dbFile)
 	if err != nil {
 		log.Fatalf("Ошибка инициализации базы данных: %v", err)
 	}
 	defer db.Close()
 
-	log.Println("База данных успешно инициализирована")
+	log.Printf("База данных успешно инициализирована: %s", dbFile)
 
 	// Создаем конфигурацию сервера
 	config := server.DefaultConfig()
